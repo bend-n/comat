@@ -72,6 +72,11 @@ impl Parse for CFStr {
                             out.push('{');
                             continue;
                         }
+                        Some('}') => {
+                            out.push('{');
+                            out.push('}');
+                            continue;
+                        }
                         Some(ch) => temp.push(ch),
                         None => return Err(stream.error("unexpected eof")),
                     }

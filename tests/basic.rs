@@ -10,3 +10,8 @@ fn escapes() {
     assert_eq!(comat!("{{ow}} {{red}}"), "{ow} {red}");
     assert_eq!(comat!("{{{{"), "{{");
 }
+
+#[test]
+fn take() {
+    assert_eq!(comat!("{}"), "{}");
+}
