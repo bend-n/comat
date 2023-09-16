@@ -88,9 +88,11 @@ impl Parse for CFStr {
                                     temp.clear();
                                     break;
                                 } else if let Some((b, a)) = temp.split_once(':') {
-                                    if let Some(a) = name2ansi(a) {
-                                        out.push_str(name2ansi("reset").unwrap());
-                                        out.push_str(a);
+                                    if let Some(ansi) = name2ansi(a) {
+                                        if a != "reset" {
+                                            out.push_str(name2ansi("reset").unwrap());
+                                        }
+                                        out.push_str(ansi);
                                         out.push('{');
                                         out.push_str(b);
                                         out.push('}');

@@ -15,3 +15,8 @@ fn escapes() {
 fn take() {
     assert_eq!(comat!("{}"), "{}");
 }
+
+#[test]
+fn resetty() {
+    assert_eq!(comat!("{:reset}"), "\x1b[0m{}\x1b[0m")
+}
