@@ -23,11 +23,11 @@
 //!   ```
 //!   vs
 //!   ```
-//!   print!("\x1b[0;34;31mred\x1b[0m.");
+//!   print!("\x1b[0;34;31m{thing}\x1b[0m.");
 //!   ```
 //!   vs
 //!   ```ignore
-//!   print!("{}.", "red".red());
+//!   print!("{}.", thing.red());
 //!   ```
 //! - intuitive: you dont have to
 //!   ```ignore
