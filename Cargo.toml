@@ -1,0 +1,16 @@
+[package]
+name = "comat"
+version = "0.1.0"
+edition = "2021"
+authors = ["bendn <bend.n@outlook.com>"]
+license = "MIT"
+description = "a better coloring crate"
+repository = "https://github.com/bend-n/comat"
+
+[lib]
+proc_macro = true
+
+[dependencies]
+proc-macro2 = "1.0.67"
+quote = "1.0.32"
+syn = { version = "2.0.15", features = ["full"] }
