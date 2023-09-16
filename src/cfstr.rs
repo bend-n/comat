@@ -61,7 +61,7 @@ pub struct CFStr(String);
 impl Parse for CFStr {
     fn parse(stream: syn::parse::ParseStream) -> Result<Self> {
         let input = stream.parse::<LitStr>()?.value();
-        let mut chars = input.chars().peekable();
+        let mut chars = input.chars();
         let mut temp = String::new();
         let mut out = String::new();
         while let Some(ch) = chars.next() {
@@ -80,26 +80,37 @@ impl Parse for CFStr {
                         Some(ch) => temp.push(ch),
                         None => return Err(stream.error("unexpected eof")),
                     }
-                    for ch in chars.by_ref() {
+                    'outer: for ch in chars.by_ref() {
                         match ch {
                             '}' => {
                                 if let Some(a) = name2ansi(&temp) {
                                     out.push_str(a);
                                     temp.clear();
                                     break;
-                                } else if let Some((b, a)) = temp.split_once(':') {
-                                    if let Some(ansi) = name2ansi(a) {
-                                        if a != "reset" {
-                                            out.push_str(name2ansi("reset").unwrap());
-                                        }
-                                        out.push_str(ansi);
-                                        out.push('{');
-                                        out.push_str(b);
-                                        out.push('}');
+                                } else if let Some((b, a)) = temp
+                                    .split_once(':')
+                                    .map(|(a, b)| (a.to_string(), b.to_string()))
+                                {
+                                    if a != "reset" {
                                         out.push_str(name2ansi("reset").unwrap());
-                                        temp.clear();
-                                        break;
                                     }
+                                    for a in a.split(',') {
+                                        if let Some(ansi) = name2ansi(a) {
+                                            out.push_str(ansi);
+                                        } else {
+                                            out.push('{');
+                                            out.push_str(&temp);
+                                            out.push('}');
+                                            temp.clear();
+                                            break 'outer;
+                                        }
+                                    }
+                                    out.push('{');
+                                    out.push_str(&b);
+                                    out.push('}');
+                                    temp.clear();
+                                    out.push_str(name2ansi("reset").unwrap());
+                                    break;
                                 }
                                 out.push('{');
                                 out.push_str(&temp);

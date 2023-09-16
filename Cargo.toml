@@ -1,6 +1,6 @@
 [package]
 name = "comat"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["bendn <bend.n@outlook.com>"]
 license = "MIT"

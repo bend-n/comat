@@ -12,7 +12,7 @@
 //! cprintln!("the traffic light will be {green}green{reset} at {:?}.", Instant::now() + Duration::from_secs(40));
 //! ```
 //!
-//! ## why you should use comat instead of {yansi, owo_colors, colored, ..}
+//! ## why you should use comat instead of {`yansi`, `owo_colors`, `colored`, ..}
 //!
 //! - no method pollution, your intellisense remains fine
 //! - compact: shorter than even raw ansi. see:
@@ -27,18 +27,20 @@
 //!   print!("\x1b[0;34;31m{thing}\x1b[0m.");
 //!   ```
 //!   vs
-//!   ```ignore
+//!   ```
+//!   # #[cfg(doc)]
 //!   print!("{}.", thing.red());
 //!   ```
 //! - intuitive: you dont have to
-//!   ```ignore
-//!   println!("{} {} {}", thing1.red().on_blue(), thing2.red().on_blue(), thing3.italic());.
+//!   ```
+//!   # #[cfg(doc)]
+//!   println!("{} {} {}", thing1.red().on_blue(), thing2.red().on_blue(), thing3.italic().yellow());
 //!   ```
 //!   instead, simply
 //!   ```
 //!   # use comat::cprintln;
 //!   # let thing1 = 0; let thing2 = 5; let thing3 = 4;
-//!   cprintln!("{red}{on_blue}{thing1} {thing2} {thing3:italic}");
+//!   cprintln!("{red}{on_blue}{thing1} {thing2} {thing3:italic,yellow}");
 //!   ```
 //!
 //! ## syntax
@@ -50,6 +52,13 @@
 //! if the color inside a `{}` is not found, it doesnt touch the block, for convenience.
 //!
 //! `{thing:color}` will reset everything before the block, color it, and reset that color. similar to `thing.color()` with other libs.
+//! it can also contain more than one color: `{thing:yelow,italic,on_red}`
+//!
+//! ## colors
+//!
+//! `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `default` `bold_black` `bold_red` `bold_green` `bold_yellow` `bold_blue` `bold_magenta` `bold_cyan` `bold_white`
+//! `bold_default` `on_black_bold` `on_red_bold` `on_green_bold` `on_yellow_bold` `on_blue_bold` `on_magenta_bold` `on_cyan_bold` `on_white_bold` `on_default_bold` `on_black` `on_red`
+//! `on_green` `on_yellow` `on_blue` `on_magenta` `on_cyan` `on_white` `on_default` `reset` `dim` `italic` `underline` `blinking` `hide` `strike` `bold`
 #![forbid(unsafe_code)]
 #![warn(clippy::pedantic, clippy::dbg_macro, missing_docs)]
 use proc_macro::TokenStream;
