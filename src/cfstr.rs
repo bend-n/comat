@@ -91,11 +91,15 @@ impl Parse for CFStr {
                                     .split_once(':')
                                     .map(|(a, b)| (a.to_string(), b.to_string()))
                                 {
-                                    if a != "reset" {
-                                        out.push_str(name2ansi("reset").unwrap());
-                                    }
+                                    let mut reset = false;
                                     for a in a.split(',') {
                                         if let Some(ansi) = name2ansi(a) {
+                                            if !reset {
+                                                reset = true;
+                                                if a != "reset" {
+                                                    out.push_str(name2ansi("reset").unwrap());
+                                                }
+                                            }
                                             out.push_str(ansi);
                                         } else {
                                             out.push('{');
